@@ -21,7 +21,6 @@ class Boxer():
 
 def sort_round(bracket):
     bracket = sorted(bracket, key=lambda x: x.rank)
-    print(rank_bracket(bracket))
     return bracket
 
 
@@ -56,17 +55,26 @@ def sim_fight(boxer1, boxer2, sim_speed):
     else:
         print(str(boxer1.name)+" wins!")
         return boxer1
+    
 def turn(b1,b2):
     attack = (b1.power+random.randint(0,32))-(b2.agility+random.randint(0,32)) # Function to determine wether they hit or missed
     if attack > 0:
         b2.endurance -= attack
-        print("Big hit from "+b1.name+"!")
+        pre_announcements = ["That one lands from ", "Right hook from ", "Left jab connects by "]
+        post_announcements = [" with the uppercut", " connects with that one", " with the one two"]
+        if random.randint(0,1) == 0:
+            print(pre_announcements[random.randint(0,len(pre_announcements)-1)]+b1.name)
+        else:
+            print(b1.name+post_announcements[random.randint(0,len(post_announcements)-1)])
         return attack
     else:
+        pre_announcements = ["Big dodge by ", "Blocked By ", "Solid read from "]
+        post_announcements = [" escapes the hit", " avoids the swing", " gets away"]
         if random.randint(0,1) == 0:
-            print("Blocked by "+b2.name+"!")
+            print(pre_announcements[random.randint(0,len(pre_announcements)-1)]+b2.name)
         else:
-            print(b2.name+" dogded that one!")
+            print(b2.name+post_announcements[random.randint(0,len(post_announcements)-1)])
+
     return 0
 
 def watch_fight(boxer1, boxer2, sim_speed):
@@ -106,11 +114,12 @@ def sim_bracket(tournament, sim_speed):
             sim_style = input("watch or Sim? ").lower()
         if sim_style == "watch":
             next_round.append(watch_fight(tournament[0],tournament[-1],sim_speed)) # Watch the fight
+            time.sleep(sim_speed)
         else:
             next_round.append(sim_fight(tournament[0],tournament[-1],sim_speed)) # Sim the fight
         tournament.pop(0)
         tournament.pop(-1)
-        time.sleep(sim_speed)
+        
     return next_round 
     
 
