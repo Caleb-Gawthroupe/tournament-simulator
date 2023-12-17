@@ -17,6 +17,31 @@ class Boxer():
         self.power = random.randint(1,33)
         self.endurance = random.randint(1,33)
         self.rank = self.agility+self.power+self.endurance
+        
+class Player():
+    def __init__(self):
+        self.name = Player.create_name()
+        self.agility = self.create_stat("Agility")
+        self.endurance = self.create_stat("Endurance")
+        self.power = self.create_stat("Power")
+        self.rank = self.agility+self.power+self.endurance
+        print(self.name+" ("+str(self.rank)+")")
+        
+    def create_name():
+        confirm = ""
+        while confirm != "y":
+            name = input("\nBoxer's name? ")
+            confirm = input("Is "+name+" right? (y/n) ")
+        return name
+    
+    def create_stat(self, stat):
+        s = 0
+        while round(s) < 1 or round(s) > 33:
+            s = int(input("(1-33) "+ stat+": "))
+        return round(s)
+        
+        
+        
 
 
 def sort_round(bracket):
@@ -26,11 +51,14 @@ def sort_round(bracket):
 
 def create_boxers():
     initial = [] 
-    size = int(input("How many players are competing? "))
+    size = int(input("How many boxers do you want to auto generate? "))
     # add the size ammount of boxers to the initial bracket
     for i in range(size):
         initial.append(Boxer())
     # Sort the initial list based on the boxers rank
+    size = int(input("How many boxers do you want to create manually? "))
+    for i in range(size):
+        initial.append(Player())
     initial = sort_round(initial)
     return initial
 
